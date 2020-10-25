@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TString.h"
+
 #include "TDataArrayBase.h"
 
 #include <vector>
@@ -8,20 +8,24 @@
 
 
 /*
-* Class TDataArray (Regular Type version)
-* AnaGame array designed to hold raw data
+* Class: TDataArray (Regular Type version)
+* Purpose: AnaGame array designed to hold raw data
+* 
+* SuperClass: TDataArrayBase - common base class for all TDataArrays
 */
 template<typename T> class  TDataArray : public TDataArrayBase
 {
-	friend class TDataArray<T>;
 private:
+	/**
+	 * Pointer to the data being held
+	 */
 	T* array;
 	// UINT size, capacity;
 
 public:
 	/*
-	* Method: (TDataArray) (Constructor)
-	* Purpose: Sets up a TDataArray based off an existing one
+	* Method: TDataArray::TDataArray
+	* Purpose: Copy Constructor
 	* Parameters: TDataArray<T>& newArray - the Data Array to copy
 	* Returns: void
 	*/
@@ -38,18 +42,20 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - data
+	* Method: TDataArray::data
 	* Purpose: Retrieves the location of the underlying array
 	* Parameters: void
-	* Returns: T* data address in memory
+	* Returns: T* - data address in memory
+	* 
+	* Attributes: const
 	*/
-	T* data()
+	T* data() const
 	{
 		return array;
 	}
 
 	/*
-	* Method: TDataArray - operator[]
+	* Method: TDataArray::operator[]
 	* Purpose: Gives the TDataArray array like functionality
 	* Parameters: size_t c - index to target
 	* Returns: T& - element at index
@@ -57,12 +63,12 @@ public:
 	T& operator[](size_t c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		return array[c];
 	}
 
 	/*
-	* Method: TDataArray - operator=
+	* Method: TDataArray::operator=
 	* Purpose: Copies the contents of an exisitng data array to the TDataArray
 	* Parameters: TDataArray<T>& newArray - the Data Array to copy
 	* Returns: void
@@ -83,7 +89,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - at
+	* Method: TDataArray::at
 	* Purpose: returns element at a given index
 	* Parameters: UINT c - the index to target
 	* Returns: T& - element at index
@@ -91,12 +97,12 @@ public:
 	T& at(UINT c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		return array[c];
 	}
 
 	/*
-	* Method: TDataArray - operator=
+	* Method: TDataArray::operator=
 	* Purpose: Copies the contents of a C++ standard vector to the TDataArray
 	* Parameters: std::vector<T, std::allocator<T>>& vectorSource - the vector to copy
 	* Returns: void
@@ -139,10 +145,12 @@ public:
 	
 
 	/*
-	* Method: TDataArray - Capacity
+	* Method: TDataArray::Capacity
 	* Purpose: Reports the size of the underlying array
 	* Parameters: void
 	* Returns: UINT - the size of the unerlying array being used
+	* 
+	* Attributes: const
 	*/
 	UINT Capacity() const
 	{
@@ -150,7 +158,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - push_back
+	* Method: TDataArray::push_back
 	* Purpose: Appends an element to the DataArray
 	* Parameters: T element - the data to append
 	* Returns: UINT - the new size of the DataArray
@@ -172,7 +180,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - RemoveAt
+	* Method: TDataArray::RemoveAt
 	* Purpose: Removes an element at a certain location
 	* Parameters: UINT c - the location to remove
 	* Returns: T - the data stored at that location
@@ -180,7 +188,7 @@ public:
 	T RemoveAt(UINT c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		T returnable = array[c];
 
 		for (; c < size - 1; c++)
@@ -190,7 +198,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - RemoveAll
+	* Method: TDataArray::RemoveAll
 	* Purpose: Removes all emements and sets count to 0
 	* Parameters: void
 	* Returns: void
@@ -210,24 +218,30 @@ public:
 };
 
 /*
-* Class TDataArray (Pointer Type Version)
-* AnaGame Array designed to hold raw pointers to data 
+* Class: TDataArray (Pointer Type Version)
+* Purpose: AnaGame Array designed to hold raw pointers to data 
+* 
+* SuperClass: TDataArrayBase - common base class for all TDataArrays
 */
 template<typename T> 
 class  TDataArray<T*> : public TDataArrayBase
 {
-	friend class TDataArray<T*>;
 private:
+	/**
+	 * Holds list of pointers
+	 */
 	T** array;
 	 // UINT size, capacity;
 
 public:
 
 	/*
-	* Method: TDataArray - data
+	* Method: TDataArray::data
 	* Purpose: Retrieves the location of the underlying array
 	* Parameters: void
 	* Returns: T* data address in memory
+	* 
+	* Attributes: const
 	*/
 	T** data() const
 	{
@@ -235,7 +249,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - operator[]
+	* Method: TDataArray::operator[]
 	* Purpose: Gives the TDataArray array like functionality
 	* Parameters: size_t c - index to target
 	* Returns: T& - element at index
@@ -243,19 +257,19 @@ public:
 	T* operator[](size_t c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		return array[c];
 	}
 
 	bool setAt(T* obj, size_t c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		array[c] = obj;
 	}
 
 	/*
-	* Method: TDataArray - operator=
+	* Method: TDataArray::operator=
 	* Purpose: Copies the contents of an exisitng data array to the TDataArray
 	* Parameters: TDataArray<T>& newArray - the Data Array to copy
 	* Returns: void
@@ -276,7 +290,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - at
+	* Method: TDataArray::at
 	* Purpose: returns element at a given index
 	* Parameters: UINT c - the index to target
 	* Returns: T& - element at index
@@ -284,12 +298,12 @@ public:
 	T* at(UINT c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		return array[c];
 	}
 
 	/*
-	* Method: TDataArray - operator=
+	* Method: TDataArray::operator=
 	* Purpose: Copies the contents of a C++ standard vector to the TDataArray
 	* Parameters: std::vector<T, std::allocator<T>>& vectorSource - the vector to copy
 	* Returns: void
@@ -299,7 +313,7 @@ public:
 		if (array)
 			delete[] array;
 		capacity = vectorSource.capacity();
-		array = new (T*)[capacity];
+		array = new T*[capacity];
 		size = vectorSource.size();
 		for (UINT c = 0; c < vectorSource.capacity(); c++)
 			array[c] = vectorSource[c];
@@ -325,7 +339,7 @@ public:
 	*/
 	TDataArray(TDataArray<T>& newArray) : TDataArrayBase(newArray.Size(), newArray.Capacity())
 	{
-		array = new (T*)[newArray.Capacity()];
+		array = new T*[newArray.Capacity()];
 
 		for (UINT c = 0; c < newArray.Size() && c < newArray.Capacity(); c++)
 			if (c < newArray.Capacity())
@@ -347,7 +361,7 @@ public:
 
 
 	/*
-	* Method: TDataArray - Capacity
+	* Method: TDataArray::Capacity
 	* Purpose: Reports the size of the underlying array
 	* Parameters: void
 	* Returns: UINT - the size of the unerlying array being used
@@ -358,7 +372,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - push_back
+	* Method: TDataArray::push_back
 	* Purpose: Appends an element to the DataArray
 	* Parameters: T element - the data to append
 	* Returns: UINT - the new size of the DataArray
@@ -380,7 +394,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - RemoveAt
+	* Method: TDataArray::RemoveAt
 	* Purpose: Removes an element at a certain location
 	* Parameters: UINT c - the location to remove
 	* Returns: T - the data stored at that location
@@ -388,7 +402,7 @@ public:
 	T* RemoveAt(UINT c)
 	{
 		if (c >= size)
-			throw new TString(L"IndexOutOfBounds");
+			throw L"IndexOutOfBounds";
 		T* returnable = array[c];
 
 		for (; c < size - 1; c++)
@@ -398,7 +412,7 @@ public:
 	}
 
 	/*
-	* Method: TDataArray - RemoveAll
+	* Method: TDataArray::RemoveAll
 	* Purpose: Removes all emements and sets count to 0
 	* Parameters: void
 	* Returns: void
